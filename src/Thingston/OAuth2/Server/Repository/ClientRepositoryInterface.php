@@ -9,9 +9,9 @@
  * @license https://opensource.org/licenses/MIT MIT
  */
 
-namespace Thingston\OAuth2Server\Repository;
+namespace Thingston\OAuth2\Server\Repository;
 
-use Thingston\OAuth2Server\Entity\ClientInterface;
+use Thingston\OAuth2\Server\Entity\ClientInterface;
 
 /**
  * Client repository interface.
@@ -51,5 +51,5 @@ interface ClientRepositoryInterface
      * @param string $id
      * @return ClientInterface|null
      */
-    public function findById(string $id): ?ClientInterface;
+    public function find(string $id): ?ClientInterface;
 }

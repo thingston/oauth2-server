@@ -1,4 +1,4 @@
 Thingston OAuth2 Server
 =======================
 
-Secure OAuth2 Server library conforming with RFC 6749.
+Secure OAuth2 Server PHP library conforming with RFC 6749.
