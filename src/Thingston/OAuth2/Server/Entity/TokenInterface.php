@@ -4,7 +4,7 @@
  * Thingston OAuth2 Server
  *
  * @version 0.1.0
- * @link https://github.com/thingston/crawler Public Git repository
+ * @link https://github.com/thingston/ Public Git repository
  * @copyright (c) 2018, Pedro Ferreira <https://thingston.com>
  * @license https://opensource.org/licenses/MIT MIT
  */
@@ -21,6 +21,13 @@ use JsonSerializable;
  */
 interface TokenInterface extends JsonSerializable
 {
+
+    /**
+     * Get client.
+     *
+     * @return ClientInterface
+     */
+    public function getClient(): ClientInterface;
 
     /**
      * Get created at datetime.

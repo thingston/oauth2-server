@@ -4,7 +4,7 @@
  * Thingston OAuth2 Server
  *
  * @version 0.1.0
- * @link https://github.com/thingston/crawler Public Git repository
+ * @link https://github.com/thingston/ Public Git repository
  * @copyright (c) 2018, Pedro Ferreira <https://thingston.com>
  * @license https://opensource.org/licenses/MIT MIT
  */
@@ -30,34 +30,34 @@ interface GrantInterface
     public function getKey(): string;
 
     /**
-     * Get unique response type used on GET requests to authorize endpoint.
+     * Get unique response type value used on GET requests to authorize
+     * endpoint ( (null if not supported)).
      *
      * @return string
      */
-    public function getResponseType(): string;
+    public function getResponseType(): ?string;
 
     /**
-     * Get unique grant type used on POST requests to token endpoint.
+     * Get unique grant type value used on POST requests to token
+     * endpoint (null if not supported).
      *
      * @return string
      */
-    public function getGrantType(): string;
+    public function getGrantType(): ?string;
 
     /**
      * Authorize a request.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function authorize(ServerRequestInterface $request, ResponseInterface $response = null): ResponseInterface;
+    public function authorize(ServerRequestInterface $request): ResponseInterface;
 
     /**
      * Create a token.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function token(ServerRequestInterface $request, ResponseInterface $response = null): ResponseInterface;
+    public function token(ServerRequestInterface $request): ResponseInterface;
 }

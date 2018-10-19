@@ -13,25 +13,24 @@ namespace Thingston\OAuth2\Server\Http;
 
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
-use Thingston\OAuth2\Server\Error\ErrorInterface;
+use Thingston\OAuth2\Server\Token\TokenInterface;
 
 /**
- * Error response.
+ * Token response.
  *
  * @author Pedro Ferreira <pedro@thingston.com>
  */
-class ErrorResponse extends Response implements ResponseInterface
+class TokenResponse extends Response implements ResponseInterface
 {
 
     /**
      * Create new instance.
      *
-     * @param ErrorInterface $error
+     * @param TokenInterface $token
      */
-    public function __construct(ErrorInterface $error)
+    public function __construct(TokenInterface $token)
     {
         $headers = ['Content-Type' => 'application/json'];
-        parent::__construct($error->getStatus(), $headers, $error->jsonSerialize());
+        parent::__construct($token->getStatus(), $headers, $token->jsonSerialize());
     }
-
 }
