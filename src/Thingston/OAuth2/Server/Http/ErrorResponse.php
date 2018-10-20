@@ -4,7 +4,7 @@
  * Thingston OAuth2 Server
  *
  * @version 0.1.0
- * @link https://github.com/thingston/ Public Git repository
+ * @link https://github.com/thingston/oauth2-server Public Git repository
  * @copyright (c) 2018, Pedro Ferreira <https://thingston.com>
  * @license https://opensource.org/licenses/MIT MIT
  */
@@ -31,7 +31,6 @@ class ErrorResponse extends Response implements ResponseInterface
     public function __construct(ErrorInterface $error)
     {
         $headers = ['Content-Type' => 'application/json'];
-        parent::__construct($error->getStatus(), $headers, $error->jsonSerialize());
+        parent::__construct($error->getStatus(), $headers, json_encode($error->jsonSerialize()));
     }
-
 }

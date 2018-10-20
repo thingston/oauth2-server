@@ -4,7 +4,7 @@
  * Thingston OAuth2 Server
  *
  * @version 0.1.0
- * @link https://github.com/thingston/ Public Git repository
+ * @link https://github.com/thingston/oauth2-server Public Git repository
  * @copyright (c) 2018, Pedro Ferreira <https://thingston.com>
  * @license https://opensource.org/licenses/MIT MIT
  */
@@ -27,7 +27,7 @@ class MethodNotAllowedError extends Error
      * @param int $status
      * @param string $uri
      */
-    public function __construct(string $description, string $code = ErrorInterface::METHOD_NOT_ALLOWED_CODE, int $status = ErrorInterface::METHOD_NOT_ALLOWED_STATUS, string $uri = 'https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html')
+    public function __construct(string $description, string $code = ErrorInterface::METHOD_NOT_ALLOWED_CODE, int $status = ErrorInterface::METHOD_NOT_ALLOWED_STATUS, string $uri = ErrorInterface::DEFAULT_URI)
     {
         parent::__construct($code, $status, $description, $uri);
     }

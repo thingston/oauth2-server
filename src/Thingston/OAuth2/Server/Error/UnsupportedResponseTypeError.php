@@ -4,7 +4,7 @@
  * Thingston OAuth2 Server
  *
  * @version 0.1.0
- * @link https://github.com/thingston/ Public Git repository
+ * @link https://github.com/thingston/oauth2-server Public Git repository
  * @copyright (c) 2018, Pedro Ferreira <https://thingston.com>
  * @license https://opensource.org/licenses/MIT MIT
  */
@@ -12,11 +12,11 @@
 namespace Thingston\OAuth2\Server\Error;
 
 /**
- * Unsupported response error.
+ * Unsupported response type error.
  *
  * @author Pedro Ferreira <pedro@thingston.com>
  */
-class UnsupportedResponseError extends Error
+class UnsupportedResponseTypeError extends Error
 {
 
     /**
@@ -27,7 +27,7 @@ class UnsupportedResponseError extends Error
      * @param int $status
      * @param string $uri
      */
-    public function __construct(string $description, string $code = ErrorInterface::UNSUPPORTED_RESPONSE_TYPE_CODE, int $status = ErrorInterface::UNSUPPORTED_RESPONSE_TYPE_STATUS, string $uri = 'https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html')
+    public function __construct(string $description, string $code = ErrorInterface::UNSUPPORTED_RESPONSE_TYPE_CODE, int $status = ErrorInterface::UNSUPPORTED_RESPONSE_TYPE_STATUS, string $uri = ErrorInterface::DEFAULT_URI)
     {
         parent::__construct($code, $status, $description, $uri);
     }

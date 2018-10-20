@@ -4,7 +4,7 @@
  * Thingston OAuth2 Server
  *
  * @version 0.1.0
- * @link https://github.com/thingston/ Public Git repository
+ * @link https://github.com/thingston/oauth2-server Public Git repository
  * @copyright (c) 2018, Pedro Ferreira <https://thingston.com>
  * @license https://opensource.org/licenses/MIT MIT
  */
@@ -94,9 +94,9 @@ class AuthorizationServer
         }
 
         switch ($request->getMethod()) {
-            case 'GET' :
+            case 'GET':
                 return $grant->authorize($request);
-            case 'POST' :
+            case 'POST':
                 return $grant->token($request);
         }
 
@@ -146,5 +146,4 @@ class AuthorizationServer
 
         return null;
     }
-
 }

@@ -4,7 +4,7 @@
  * Thingston OAuth2 Server
  *
  * @version 0.1.0
- * @link https://github.com/thingston/ Public Git repository
+ * @link https://github.com/thingston/oauth2-server Public Git repository
  * @copyright (c) 2018, Pedro Ferreira <https://thingston.com>
  * @license https://opensource.org/licenses/MIT MIT
  */
@@ -75,7 +75,7 @@ class ClientCredentialsRequest
             $this->inspect();
         }
 
-        return $this->id;
+        return $this->id ?: null;
     }
 
     /**
@@ -93,7 +93,7 @@ class ClientCredentialsRequest
             $this->inspect();
         }
 
-        return $this->secret;
+        return $this->secret ?: null;
     }
 
     /**
@@ -110,11 +110,12 @@ class ClientCredentialsRequest
             return $this->inspectAuthorizationHeader($this->request->getHeader('Authorization'));
         }
 
-        if ('' === $userInfo = $this->request->getUri()->getUserInfo()) {
+        if ('' !== $userInfo = $this->request->getUri()->getUserInfo()) {
             return $this->inspectUserInfo($userInfo);
         }
 
         if (false === empty($params = $this->request->getParsedBody())) {
+        dump($params);exit;
             return $this->inspectBodyParams($params);
         }
 
@@ -146,7 +147,7 @@ class ClientCredentialsRequest
         $parts = explode(':', $hash, 2);
 
         $this->id = urldecode($parts[0]);
-        $this->secret = $parts[1] ?? urldecode($parts[1]);
+        $this->secret = true === isset($parts[1]) ? urldecode($parts[1]) : false;
 
         return $this;
     }
@@ -164,7 +165,7 @@ class ClientCredentialsRequest
         $parts = explode(':', $userInfo, 2);
 
         $this->id = urldecode($parts[0]);
-        $this->secret = $parts[1] ?? urldecode($parts[1]);
+        $this->secret = true === isset($parts[1]) ? urldecode($parts[1]) : false;
 
         return $this;
     }
@@ -176,11 +177,12 @@ class ClientCredentialsRequest
      */
     public function inspectBodyParams(array $params): ClientCredentialsRequest
     {
+        dump($params);exit;
         $this->id = false;
         $this->secret = false;
 
         $this->id = $params['client_id'] ?? urldecode($params['client_id']);
-        $this->secret = $params['client_secret'] ?? urldecode($params['client_secret']);
+        $this->secret = true === isset($params['client_secret']) ? urldecode($params['client_secret']) : false;
 
         return $this;
     }

@@ -4,7 +4,7 @@
  * Thingston OAuth2 Server
  *
  * @version 0.1.0
- * @link https://github.com/thingston/ Public Git repository
+ * @link https://github.com/thingston/oauth2-server Public Git repository
  * @copyright (c) 2018, Pedro Ferreira <https://thingston.com>
  * @license https://opensource.org/licenses/MIT MIT
  */
@@ -40,6 +40,11 @@ interface ErrorInterface extends JsonSerializable
     const SERVER_ERROR_STATUS = 500;
     const TEMPORARILY_UNAVAILABLE_CODE = 'temporarily_unavailable';
     const TEMPORARILY_UNAVAILABLE_STATUS = 503;
+
+    /**
+     * Default URI
+     */
+    const DEFAULT_URI = 'https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html';
 
     /**
      * Get code.
