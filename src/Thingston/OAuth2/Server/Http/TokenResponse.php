@@ -13,7 +13,7 @@ namespace Thingston\OAuth2\Server\Http;
 
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
-use Thingston\OAuth2\Server\Token\TokenInterface;
+use Thingston\OAuth2\Server\Entity\TokenInterface;
 
 /**
  * Token response.
@@ -31,6 +31,6 @@ class TokenResponse extends Response implements ResponseInterface
     public function __construct(TokenInterface $token)
     {
         $headers = ['Content-Type' => 'application/json'];
-        parent::__construct($token->getStatus(), $headers, $token->jsonSerialize());
+        parent::__construct(201, $headers, json_encode($token->jsonSerialize()));
     }
 }
