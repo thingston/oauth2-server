@@ -9,7 +9,7 @@
  * @license https://opensource.org/licenses/MIT MIT
  */
 
-namespace ThingstonTest\OAuth2\Server\Exception;
+namespace ThingstonTest\OAuth2\Server\Http;
 
 use PHPUnit\Framework\TestCase;
 use Thingston\OAuth2\Server\Error\Error;

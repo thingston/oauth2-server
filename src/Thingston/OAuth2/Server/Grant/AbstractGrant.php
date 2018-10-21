@@ -15,12 +15,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Thingston\OAuth2\Server\Error\MethodNotAllowedError;
 use Thingston\OAuth2\Server\Http\ErrorResponse;
-use Thingston\OAuth2\Server\Repository\ClientRepositoryAwareInterface;
-use Thingston\OAuth2\Server\Repository\ClientRepositoryAwareTrait;
 use Thingston\OAuth2\Server\Repository\ClientRepositoryInterface;
-use Thingston\OAuth2\Server\Repository\TokenRepositoryAwareInterface;
-use Thingston\OAuth2\Server\Repository\TokenRepositoryAwareTrait;
 use Thingston\OAuth2\Server\Repository\TokenRepositoryInterface;
+use Thingston\OAuth2\Server\Repository\UserRepositoryInterface;
 
 /**
  * Abstract grant.
@@ -28,19 +25,77 @@ use Thingston\OAuth2\Server\Repository\TokenRepositoryInterface;
  * @see https://tools.ietf.org/html/rfc6749#section-4.4
  * @author Pedro Ferreira <pedro@thingston.com>
  */
-abstract class AbstractGrant implements GrantInterface, ClientRepositoryAwareInterface, TokenRepositoryAwareInterface
+abstract class AbstractGrant implements GrantInterface
 {
 
     /**
-     * Implements required interfaces
+     * @var ClientRepository
      */
-    use ClientRepositoryAwareTrait,
-        TokenRepositoryAwareTrait;
+    protected $clientRepository;
 
-    public function __construct(ClientRepositoryInterface $clientRepository, TokenRepositoryInterface $tokenRepository)
+    /**
+     * @var UserRepository
+     */
+    protected $userRepository;
+
+    /**
+     * @var TokenRepository
+     */
+    protected $tokenRepository;
+
+    /**
+     * @var int
+     */
+    protected $ttl;
+
+    /**
+     * @var string
+     */
+    protected $responseType;
+
+    /**
+     * @var string
+     */
+    protected $grantType;
+
+    /**
+     * Get client repository.
+     *
+     * @return ClientRepositoryInterface
+     */
+    public function getClientRepository(): ClientRepositoryInterface
     {
-        $this->clientRepository = $clientRepository;
-        $this->tokenRepository = $tokenRepository;
+        return $this->clientRepository;
+    }
+
+    /**
+     * Get user repository.
+     *
+     * @return UserRepositoryInterface
+     */
+    public function getUserRepository(): UserRepositoryInterface
+    {
+        return $this->userRepository;
+    }
+
+    /**
+     * Get token repository.
+     *
+     * @return TokenRepositoryInterface
+     */
+    public function getTokenRepository(): TokenRepositoryInterface
+    {
+        return $this->tokenRepository;
+    }
+
+    /**
+     * Get TTL.
+     *
+     * @return int
+     */
+    public function getTtl(): int
+    {
+        return $this->ttl;
     }
 
     /**
@@ -59,9 +114,9 @@ abstract class AbstractGrant implements GrantInterface, ClientRepositoryAwareInt
      *
      * @return string
      */
-    public function getResponseType(): ?string
+    public function getResponseType(): string
     {
-        return null;
+        return $this->responseType;
     }
 
     /**
@@ -70,9 +125,9 @@ abstract class AbstractGrant implements GrantInterface, ClientRepositoryAwareInt
      *
      * @return string
      */
-    public function getGrantType(): ?string
+    public function getGrantType(): string
     {
-        return null;
+        return $this->grantType;
     }
 
     /**

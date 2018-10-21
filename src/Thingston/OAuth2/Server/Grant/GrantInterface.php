@@ -13,6 +13,9 @@ namespace Thingston\OAuth2\Server\Grant;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Thingston\OAuth2\Server\Repository\ClientRepositoryInterface;
+use Thingston\OAuth2\Server\Repository\TokenRepositoryInterface;
+use Thingston\OAuth2\Server\Repository\UserRepositoryInterface;
 
 /**
  * Grant interface.
@@ -22,6 +25,33 @@ use Psr\Http\Message\ServerRequestInterface;
 interface GrantInterface
 {
 
+    /**
+     * Get client repository.
+     *
+     * @return ClientRepositoryInterface
+     */
+    public function getClientRepository(): ClientRepositoryInterface;
+
+    /**
+     * Get user repository.
+     *
+     * @return UserRepositoryInterface
+     */
+    public function getUserRepository(): UserRepositoryInterface;
+
+    /**
+     * Get token repository.
+     *
+     * @return TokenRepositoryInterface
+     */
+    public function getTokenRepository(): TokenRepositoryInterface;
+
+    /**
+     * Get TTL.
+     *
+     * @return int
+     */
+    public function getTtl(): int;
     /**
      * Get unique identifier key.
      *
@@ -35,7 +65,7 @@ interface GrantInterface
      *
      * @return string
      */
-    public function getResponseType(): ?string;
+    public function getResponseType(): string;
 
     /**
      * Get unique grant type value used on POST requests to token
@@ -43,7 +73,7 @@ interface GrantInterface
      *
      * @return string
      */
-    public function getGrantType(): ?string;
+    public function getGrantType(): string;
 
     /**
      * Authorize a request.

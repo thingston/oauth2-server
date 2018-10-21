@@ -13,12 +13,14 @@ namespace Thingston\OAuth2\Server\Grant;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Thingston\OAuth2\Server\Entity\AccessToken;
 use Thingston\OAuth2\Server\Error\AccessDeniedError;
 use Thingston\OAuth2\Server\Error\InvalidRequestError;
-use Thingston\OAuth2\Server\Error\UnauthorizedClientError;
 use Thingston\OAuth2\Server\Http\ClientCredentialsRequest;
 use Thingston\OAuth2\Server\Http\ErrorResponse;
 use Thingston\OAuth2\Server\Http\TokenResponse;
+use Thingston\OAuth2\Server\Repository\ClientRepositoryInterface;
+use Thingston\OAuth2\Server\Repository\TokenRepositoryInterface;
 
 /**
  * Client credentials grant.
@@ -35,14 +37,18 @@ class ClientCredentialsGrant extends AbstractGrant
     const GRANT_TYPE = 'client_credentials';
 
     /**
-     * Get unique grant type value used on POST requests to token
-     * endpoint (null if not supported).
+     * Create new instance.
      *
-     * @return string
+     * @param ClientRepositoryInterface $clientRepository
+     * @param TokentRepositoryInterface $tokenRepository
+     * @param int $ttl
      */
-    public function getGrantType(): ?string
+    public function __construct(ClientRepositoryInterface $clientRepository, TokenRepositoryInterface $tokenRepository, int $ttl = AccessToken::TTL)
     {
-        return self::GRANT_TYPE;
+        $this->clientRepository = $clientRepository;
+        $this->tokenRepository = $tokenRepository;
+        $this->ttl = $ttl;
+        $this->grantType = self::GRANT_TYPE;
     }
 
     /**
@@ -72,7 +78,8 @@ class ClientCredentialsGrant extends AbstractGrant
             return new ErrorResponse(new AccessDeniedError('Invalid client credentials.'));
         }
 
-        $token = $this->getTokenRepository()->create($client);
+        $token = new AccessToken($client, null, null, $this->ttl);
+        $this->tokenRepository->save($token);
 
         return new TokenResponse($token);
     }

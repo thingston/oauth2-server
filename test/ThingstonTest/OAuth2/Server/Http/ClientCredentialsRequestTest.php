@@ -9,7 +9,7 @@
  * @license https://opensource.org/licenses/MIT MIT
  */
 
-namespace ThingstonTest\OAuth2\Server\Exception;
+namespace ThingstonTest\OAuth2\Server\Http;
 
 use GuzzleHttp\Psr7\ServerRequest;
 use GuzzleHttp\Psr7\Uri;

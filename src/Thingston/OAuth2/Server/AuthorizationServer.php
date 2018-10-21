@@ -20,7 +20,7 @@ use Thingston\OAuth2\Server\Grant\GrantInterface;
 use Thingston\OAuth2\Server\Http\ErrorResponse;
 
 /**
- * OAuth2 Server.
+ * OAuth2 Authorization Server.
  *
  * @author Pedro Ferreira <pedro@thingston.com>
  */
@@ -32,8 +32,15 @@ class AuthorizationServer
      */
     private $grants;
 
-    public function __construct(array $grants)
+    /**
+     * Create new instance.
+     *
+     * @param array $grants
+     */
+    public function __construct(array $grants = [])
     {
+        $this->grants = [];
+
         foreach ($grants as $grant) {
             $this->addGrant($grant);
         }
@@ -46,12 +53,8 @@ class AuthorizationServer
      * @return Server
      * @throws InvalidArgumentException
      */
-    public function addGrant(GrantInterface $grant): Server
+    public function addGrant(GrantInterface $grant): AuthorizationServer
     {
-        if (false === $grant instanceof GrantInterface) {
-            throw new InvalidArgumentException(sprintf('Expected instance of "%s" on adding grant.', GrantInterface::class));
-        }
-
         $this->grants[$grant->getKey()] = $grant;
 
         return $this;
@@ -63,7 +66,7 @@ class AuthorizationServer
      * @param GrantInterface $grant
      * @return Server
      */
-    public function removeGrant(GrantInterface $grant): Server
+    public function removeGrant(GrantInterface $grant): AuthorizationServer
     {
         unset($this->grants[$grant->getKey()]);
 
@@ -93,17 +96,9 @@ class AuthorizationServer
             return new ErrorResponse($error);
         }
 
-        switch ($request->getMethod()) {
-            case 'GET':
-                return $grant->authorize($request);
-            case 'POST':
-                return $grant->token($request);
-        }
+        $method = 'GET'=== $request->getMethod() ? 'authorize' : 'token';
 
-        $error = new MethodNotAllowedError('Request options don\'t match any supported method.');
-        $response = (new ErrorResponse($error))->withAddedHeader('Allow', 'GET, POST');
-
-        return $response;
+        return $grant->$method($request);
     }
 
     /**
@@ -133,7 +128,7 @@ class AuthorizationServer
         if ('POST' === $method) {
             $params = $request->getParsedBody();
 
-            if (null === $type = $params['response_type'] ?? null) {
+            if (null === $type = $params['grant_type'] ?? null) {
                 return null;
             }
 

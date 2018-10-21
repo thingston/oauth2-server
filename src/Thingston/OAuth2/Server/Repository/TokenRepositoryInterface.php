@@ -11,7 +11,6 @@
 
 namespace Thingston\OAuth2\Server\Repository;
 
-use Thingston\OAuth2\Server\Entity\ClientInterface;
 use Thingston\OAuth2\Server\Entity\TokenInterface;
 
 /**
@@ -21,15 +20,6 @@ use Thingston\OAuth2\Server\Entity\TokenInterface;
  */
 interface TokenRepositoryInterface
 {
-
-    /**
-     * Create new token.
-     *
-     * @param ClientInterface $client
-     * @return TokenInterface
-     */
-    public function create(ClientInterface $client): TokenInterface;
-
 
     /**
      * Check either repository contains a given token.
