@@ -13,6 +13,7 @@ namespace ThingstonTest\OAuth2\Server\Entity;
 
 use PHPUnit\Framework\TestCase;
 use Thingston\OAuth2\Server\Entity\Client;
+use Thingston\OAuth2\Server\Entity\Scope;
 
 /**
  * Client test case.
@@ -86,5 +87,25 @@ class ClientTest extends TestCase
         $client->removeRedirectUri($uri);
         $this->assertFalse($client->hasRedirectUri($uri));
         $this->assertCount(0, $client->getRedirectUris());
+    }
+
+    public function testScope()
+    {
+        $id = uniqid();
+        $secret = sha1(uniqid(random_bytes(128)));
+        $scope = new Scope('scope');
+
+        $client = new Client($id, $secret);
+
+        $this->assertFalse($client->hasScope($scope));
+        $this->assertEmpty($client->getScopes());
+
+        $client->addScope($scope);
+        $this->assertTrue($client->hasScope($scope));
+        $this->assertCount(1, $client->getScopes());
+
+        $client->removeScope($scope);
+        $this->assertFalse($client->hasScope($scope));
+        $this->assertCount(0, $client->getScopes());
     }
 }

@@ -40,6 +40,11 @@ trait ClientTrait
     private $redirectUris;
 
     /**
+     * @var bool
+     */
+    private $scopes;
+
+    /**
      * Set id.
      *
      * @param string $id
@@ -205,5 +210,60 @@ trait ClientTrait
     public function getRedirectUris(): array
     {
         return $this->redirectUris;
+    }
+
+    /**
+     * Check either scope is registered with the client.
+     *
+     * @param ScopeInterface $scope
+     * @return bool
+     */
+    public function hasScope(ScopeInterface $scope): bool
+    {
+        return true === isset($this->scopes[$scope->getName()]);
+    }
+
+    /**
+     * Register a new scope with the client.
+     *
+     * @param ScopeInterface $scope
+     * @return ClientInterface
+     */
+    public function addScope(ScopeInterface $scope): ClientInterface
+    {
+        if (false === $this->hasScope($scope)) {
+            $name = $scope->getName();
+            $this->scopes[$name] = $scope;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove a registered scope.
+     *
+     * @param ScopeInterface $scope
+     * @return ClientInterface
+     */
+    public function removeScope(ScopeInterface $scope): ClientInterface
+    {
+        foreach (array_keys($this->scopes) as $name) {
+            if ($name === $scope->getName()) {
+                unset($this->scopes[$name]);
+                break;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get all registered scopes.
+     *
+     * @return array
+     */
+    public function getScopes(): array
+    {
+        return array_values($this->scopes);
     }
 }

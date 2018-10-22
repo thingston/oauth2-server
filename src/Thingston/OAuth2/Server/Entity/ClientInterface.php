@@ -127,4 +127,35 @@ interface ClientInterface
      * @return array
      */
     public function getRedirectUris(): array;
+
+    /**
+     * Check either scope is registered with the client.
+     *
+     * @param ScopeInterface $scope
+     * @return bool
+     */
+    public function hasScope(ScopeInterface $scope): bool;
+
+    /**
+     * Register a new scope with the client.
+     *
+     * @param ScopeInterface $scope
+     * @return ClientInterface
+     */
+    public function addScope(ScopeInterface $scope): ClientInterface;
+
+    /**
+     * Remove a registered scope.
+     *
+     * @param ScopeInterface $scope
+     * @return ClientInterface
+     */
+    public function removeScope(ScopeInterface $scope): ClientInterface;
+
+    /**
+     * Get all registered scopes.
+     *
+     * @return array
+     */
+    public function getScopes(): array;
 }

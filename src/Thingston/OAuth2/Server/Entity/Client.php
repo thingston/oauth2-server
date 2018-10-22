@@ -28,12 +28,14 @@ class Client implements ClientInterface
      * @param string $secret
      * @param bool $confidential
      * @param array $redirectUris
+     * @param array $scopes
      */
-    public function __construct(string $id, string $secret, bool $confidential = true, array $redirectUris = [])
+    public function __construct(string $id, string $secret, bool $confidential = true, array $redirectUris = [], array $scopes = [])
     {
         $this->id = $id;
         $this->secret = $secret;
         $this->confidential = $confidential;
         $this->redirectUris = $redirectUris;
+        $this->scopes = $scopes;
     }
 }
