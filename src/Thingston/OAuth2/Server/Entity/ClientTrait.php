@@ -206,5 +206,4 @@ trait ClientTrait
     {
         return $this->redirectUris;
     }
-
 }
