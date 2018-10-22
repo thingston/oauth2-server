@@ -35,6 +35,11 @@ trait ClientTrait
     private $confidential;
 
     /**
+     * @var bool
+     */
+    private $redirectUris;
+
+    /**
      * Set id.
      *
      * @param string $id
@@ -147,4 +152,59 @@ trait ClientTrait
     {
         return $this->confidential;
     }
+
+    /**
+     * Check either redirect URI is registered with the client.
+     *
+     * @param string $redirectUri
+     * @return bool
+     */
+    public function hasRedirectUri(string $redirectUri): bool
+    {
+        return in_array($redirectUri, $this->redirectUris);
+    }
+
+    /**
+     * Register a new redirect URI with the client.
+     *
+     * @param string $redirectUri
+     * @return ClientInterface
+     */
+    public function addRedirectUri(string $redirectUri): ClientInterface
+    {
+        if (false === $this->hasRedirectUri($redirectUri)) {
+            $this->redirectUris[] = $redirectUri;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove a registered redirect URI.
+     *
+     * @param string $redirectUri
+     * @return ClientInterface
+     */
+    public function removeRedirectUri(string $redirectUri): ClientInterface
+    {
+        foreach ($this->redirectUris as $key => $uri) {
+            if ($redirectUri === $uri) {
+                unset($this->redirectUris[$key]);
+                break;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get all registered redirect URIs.
+     *
+     * @return array
+     */
+    public function getRedirectUris(): array
+    {
+        return $this->redirectUris;
+    }
+
 }

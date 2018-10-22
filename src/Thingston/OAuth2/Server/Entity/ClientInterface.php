@@ -96,4 +96,35 @@ interface ClientInterface
      * @return bool
      */
     public function isConfidential(): bool;
+
+    /**
+     * Check either redirect URI is registered with the client.
+     *
+     * @param string $redirectUri
+     * @return bool
+     */
+    public function hasRedirectUri(string $redirectUri): bool;
+
+    /**
+     * Register a new redirect URI with the client.
+     *
+     * @param string $redirectUri
+     * @return ClientInterface
+     */
+    public function addRedirectUri(string $redirectUri): ClientInterface;
+
+    /**
+     * Remove a registered redirect URI.
+     *
+     * @param string $redirectUri
+     * @return ClientInterface
+     */
+    public function removeRedirectUri(string $redirectUri): ClientInterface;
+
+    /**
+     * Get all registered redirect URIs.
+     *
+     * @return array
+     */
+    public function getRedirectUris(): array;
 }

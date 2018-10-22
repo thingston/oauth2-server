@@ -67,4 +67,24 @@ class ClientTest extends TestCase
         $this->assertTrue($client->isPublic());
         $this->assertFalse($client->isConfidential());
     }
+
+    public function testRedirectUri()
+    {
+        $id = uniqid();
+        $secret = sha1(uniqid(random_bytes(128)));
+        $uri = 'http://example.org';
+
+        $client = new Client($id, $secret);
+
+        $this->assertFalse($client->hasRedirectUri($uri));
+        $this->assertEmpty($client->getRedirectUris());
+
+        $client->addRedirectUri($uri);
+        $this->assertTrue($client->hasRedirectUri($uri));
+        $this->assertCount(1, $client->getRedirectUris());
+
+        $client->removeRedirectUri($uri);
+        $this->assertFalse($client->hasRedirectUri($uri));
+        $this->assertCount(0, $client->getRedirectUris());
+    }
 }
