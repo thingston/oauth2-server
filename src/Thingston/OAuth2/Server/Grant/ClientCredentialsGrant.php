@@ -16,6 +16,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Thingston\OAuth2\Server\Entity\AccessToken;
 use Thingston\OAuth2\Server\Error\AccessDeniedError;
 use Thingston\OAuth2\Server\Error\InvalidRequestError;
+use Thingston\OAuth2\Server\Error\UnauthorizedClientError;
 use Thingston\OAuth2\Server\Http\ClientCredentialsRequest;
 use Thingston\OAuth2\Server\Http\ErrorResponse;
 use Thingston\OAuth2\Server\Http\TokenResponse;
@@ -72,6 +73,10 @@ class ClientCredentialsGrant extends AbstractGrant
         /* @var $client \Thingston\OAuth2\Server\Entity\ClientInterface */
         if (null === $client = $this->getClientRepository()->find($id)) {
             return new ErrorResponse(new AccessDeniedError('Invalid client credentials.'));
+        }
+
+        if (false === $client->isConfidential()) {
+            return new ErrorResponse(new UnauthorizedClientError('Invalid client type.'));
         }
 
         if (false === $client->verify($secret)) {

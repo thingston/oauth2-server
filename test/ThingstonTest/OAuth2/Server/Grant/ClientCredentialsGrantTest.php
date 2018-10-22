@@ -98,6 +98,21 @@ class ClientCredentialsGrantTest extends TestCase
         $this->assertInstanceOf(ErrorResponse::class, $grant->token($request));
     }
 
+    public function testTokenResponseWithUnauthorizedClientType()
+    {
+        $client = new Client('foo', Client::encrypt('bar'), false);
+        $clientRepository = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
+        $clientRepository->expects($this->any())->method('find')->willReturn($client);
+        $tokenRepository = $this->getMockBuilder(TokenRepositoryInterface::class)->getMock();
+        $grant = new ClientCredentialsGrant($clientRepository, $tokenRepository);
+
+        $uri = new Uri('http://foo:bar@example.org');
+        $request = $this->getMockBuilder(ServerRequest::class)->disableOriginalConstructor()->getMock();
+        $request->expects($this->any())->method('getUri')->willReturn($uri);
+
+        $this->assertInstanceOf(ErrorResponse::class, $grant->token($request));
+    }
+
     public function testTokenResponseWithInvalidSecret()
     {
         $client = new Client('foo', Client::encrypt('baz'));
