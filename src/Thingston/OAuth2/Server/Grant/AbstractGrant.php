@@ -149,10 +149,5 @@ abstract class AbstractGrant implements GrantInterface
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function token(ServerRequestInterface $request): ResponseInterface
-    {
-        $error = new MethodNotAllowedError('Grant type not implemented.');
-
-        return new ErrorResponse($error);
-    }
+    abstract public function token(ServerRequestInterface $request): ResponseInterface;
 }
