@@ -115,8 +115,6 @@ class ClientCredentialsRequest
         }
 
         if (false === empty($params = $this->request->getParsedBody())) {
-            dump($params);
-            exit;
             return $this->inspectBodyParams($params);
         }
 
@@ -178,8 +176,6 @@ class ClientCredentialsRequest
      */
     public function inspectBodyParams(array $params): ClientCredentialsRequest
     {
-        dump($params);
-        exit;
         $this->id = false;
         $this->secret = false;
 

@@ -34,6 +34,7 @@ class ClientCredentialsRequestTest extends TestCase
 
         $this->assertNull($request->getId());
         $this->assertNull($request->getSecret());
+        $this->assertFalse($request->hasClient());
     }
 
     public function testRequestWithAuthorizationHeader()
@@ -44,6 +45,40 @@ class ClientCredentialsRequestTest extends TestCase
 
         $this->assertEquals('foo', $request->getId());
         $this->assertEquals('bar', $request->getSecret());
+        $this->assertTrue($request->hasClient());
+    }
+
+    public function testRequestWithEmptyAuthorizationHeader()
+    {
+        $uri = new Uri('http://example.org');
+        $headers = ['Authorization' => []];
+        $request = new ClientCredentialsRequest(new ServerRequest('GET', $uri, $headers));
+
+        $this->assertNull($request->getId());
+        $this->assertNull($request->getSecret());
+        $this->assertFalse($request->hasClient());
+    }
+
+    public function testRequestWithBadAuthorizationHeader()
+    {
+        $uri = new Uri('http://example.org');
+        $headers = ['Authorization' => ['bearer jdhfaiu7487rhf4f7rhc']];
+        $request = new ClientCredentialsRequest(new ServerRequest('GET', $uri, $headers));
+
+        $this->assertNull($request->getId());
+        $this->assertNull($request->getSecret());
+        $this->assertFalse($request->hasClient());
+    }
+
+    public function testRequestWithEmptyHash()
+    {
+        $uri = new Uri('http://example.org');
+        $headers = ['Authorization' => ['Basic ']];
+        $request = new ClientCredentialsRequest(new ServerRequest('GET', $uri, $headers));
+
+        $this->assertNull($request->getId());
+        $this->assertNull($request->getSecret());
+        $this->assertFalse($request->hasClient());
     }
 
     public function testRequestWithUserinfo()
@@ -57,13 +92,13 @@ class ClientCredentialsRequestTest extends TestCase
 
     public function testRequestWithBodyParams()
     {
-        $uri = new Uri('http://foo:bar@example.org');
+        $uri = new Uri('http://example.org');
         $mock = $this->getMockBuilder(ServerRequest::class)->disableOriginalConstructor()->getMock();
         $mock->expects($this->any())->method('getUri')->willReturn($uri);
         $mock->expects($this->any())->method('getParsedBody')->willReturn(['client_id' => 'foo', 'client_secret' => 'bar']);
         $request = new ClientCredentialsRequest($mock);
 
-        $this->assertEquals('foo', $request->getId());
         $this->assertEquals('bar', $request->getSecret());
+        $this->assertEquals('foo', $request->getId());
     }
 }
